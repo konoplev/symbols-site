@@ -4,9 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const practiceScreen = document.getElementById('practice-screen');
     const pairsTextArea = document.getElementById('pairs-text-area');
     const addSamplesBtn = document.getElementById('add-samples-btn');
-    const samplePairsDropdown = document.getElementById('sample-pairs-dropdown'); // Add this line
+    const samplePairsDropdown = document.getElementById('sample-pairs-dropdown'); // Add this line 
     const startPracticeBtn = document.getElementById('start-practice-btn');
     const backToSetupBtn = document.getElementById('back-to-setup-btn');
+    const practiceNameInput = document.getElementById('practice-name');
+    const practicesList = document.getElementById('practices-list');
     
     // DOM elements - Practice screen
     const latinText = document.getElementById('latin-text');
@@ -52,6 +54,28 @@ Hum - ཧཱུྃ`;
         practiceScreen.classList.add('hidden');
         
         setupEventListeners();
+        loadStoredPractices();
+    }
+
+    function loadStoredPractices() {
+        const practices = JSON.parse(localStorage.getItem('tibetanPractices')) || [];
+        practicesList.innerHTML = '';
+        
+        practices.forEach(practice => {
+            const practiceElement = document.createElement('div');
+            practiceElement.className = 'practice-item';
+            practiceElement.textContent = practice.name;
+            practiceElement.addEventListener('click', () => loadPractice(practice));
+            practicesList.appendChild(practiceElement);
+        });
+    }
+
+    function loadPractice(practice) {
+        pairsTextArea.value = practice.pairs;
+        tibetanSymbols = practice.symbols;
+        setupScreen.classList.add('hidden');
+        practiceScreen.classList.remove('hidden');
+        setNewSymbol();
     }
 
     // Setup event listeners
@@ -93,7 +117,6 @@ Hum - ཧཱུྃ`;
         }
     }
     
-    // Start practice with collected pairs
     function startPractice() {
         tibetanSymbols = [];
         collectPairs(tibetanSymbols);
@@ -102,6 +125,27 @@ Hum - ཧཱུྃ`;
             alert('Please add at least one symbol pair before starting.');
             return;
         }
+        
+        // Store the practice
+        const practices = JSON.parse(localStorage.getItem('tibetanPractices')) || [];
+        const practiceName = practiceNameInput.value.trim() || 
+            new Date().toLocaleString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        
+        practices.push({
+            name: practiceName,
+            pairs: pairsTextArea.value,
+            symbols: tibetanSymbols,
+            date: new Date().toISOString()
+        });
+        
+        localStorage.setItem('tibetanPractices', JSON.stringify(practices));
+        loadStoredPractices();
         
         setupScreen.classList.add('hidden');
         practiceScreen.classList.remove('hidden');
@@ -113,6 +157,7 @@ Hum - ཧཱུྃ`;
     function goBackToSetup() {
         practiceScreen.classList.add('hidden');
         setupScreen.classList.remove('hidden');
+        practiceNameInput.value = ''; // Clear the name input
     }
     
     // Collect pairs from the textarea

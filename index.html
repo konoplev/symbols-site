@@ -14,7 +14,17 @@
         <!-- Setup Screen - Initially Visible -->
         <div id="setup-screen" class="card">
             <h2>Enter Your Tibetan Symbols</h2>
-            <p class="instruction">Enter each pair on a new line, with Latin and Tibetan separated by any non-alphabetic symbol (-, /, etc.)</p>
+            
+            <!-- Add practice name input -->
+            <input type="text" id="practice-name" placeholder="Enter practice name (optional)" class="practice-name-input">
+            
+            <!-- Add stored practices section -->
+            <div id="stored-practices" class="stored-practices">
+                <h3>Stored Practices</h3>
+                <div id="practices-list" class="practices-list"></div>
+            </div>
+            
+            <p class="instruction">Enter each pair on a new line...</p>
             <p class="instruction">Example: Om - ཨོཾ</p>
             
             <div class="text-area-container">
