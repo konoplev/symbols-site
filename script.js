@@ -321,12 +321,19 @@ Hum - ཧཱུྃ`;
         wrapper.classList.toggle('flipped');
     }
     
-    // Modify setNewSymbol function:
     function setNewSymbol() {
         if (tibetanSymbols.length === 0) return;
         
-        currentSymbolIndex = Math.floor(Math.random() * tibetanSymbols.length);
-        currentSymbol = tibetanSymbols[currentSymbolIndex];
+        // Create a copy of symbols without the current symbol
+        let availableSymbols = [...tibetanSymbols];
+        if (currentSymbol && availableSymbols.length > 1) {
+            availableSymbols = availableSymbols.filter(symbol => symbol.latin !== currentSymbol.latin);
+        }
+        
+        // Get random symbol from available ones 
+        const randomIndex = Math.floor(Math.random() * availableSymbols.length);
+        currentSymbol = availableSymbols[randomIndex];
+        
         latinText.textContent = currentSymbol.latin;
         
         // Reset the check button
@@ -340,12 +347,10 @@ Hum - ཧཱུྃ`;
             wrapper.classList.remove('flipped');
         }
         
-        // Disable next button initially
-        nextBtn.disabled = true;
-        nextBtn.style.opacity = '0.5';
+        // Hide result div completely
+        resultDiv.classList.add('hidden');
         
         clearCanvas();
-        resultDiv.classList.add('hidden');
     }
     
 
