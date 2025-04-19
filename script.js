@@ -218,15 +218,7 @@ Hum - ཧཱུྃ`;
     }
 
     // Set a new random symbol
-    function setNewSymbol() {
-        if (tibetanSymbols.length === 0) return;
-        
-        currentSymbolIndex = Math.floor(Math.random() * tibetanSymbols.length);
-        currentSymbol = tibetanSymbols[currentSymbolIndex];
-        latinText.textContent = currentSymbol.latin;
-        resultDiv.classList.add('hidden');
-        clearCanvas();
-    }
+    let isFlipped = false;
 
     // Drawing functions
     function startDrawing(e) {
@@ -288,27 +280,70 @@ Hum - ཧཱུྃ`;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Check the drawing against the correct symbol
     function checkDrawing() {
         if (!currentSymbol) return;
         
-        // In a real implementation, this would use a machine learning model
-        // For this demo, we'll just show the correct symbol
-
-        // Show the feedback
-        resultDiv.classList.remove('hidden');
-        correctSymbol.textContent = currentSymbol.tibetan;
+        // Change button text to "Flip"
+        checkBtn.textContent = "Flip";
         
-        // Simple feedback (in a real app, this would use AI to check)
-        const dataURL = canvas.toDataURL();
-        if (dataURL === 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAYAAACAvzbMAAACu0lEQVR4nO3BMQEAAADCoPVP7WsIoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAeBoR4AAFMBTTwAAAAASUVORK5CYII=') {
-            // Canvas is empty
-            feedbackMessage.textContent = "Please draw something!";
-        } else {
-            // Normally we would compare with AI here
-            feedbackMessage.textContent = "Let's see how you did!";
+        // Create the back side with correct symbol if it doesn't exist
+        let correctSymbolBack = document.querySelector('.correct-symbol-back');
+        if (!correctSymbolBack) {
+            correctSymbolBack = document.createElement('div');
+            correctSymbolBack.className = 'correct-symbol-back';
+            // Wrap canvas in a wrapper if not already wrapped
+            if (!canvas.parentElement.classList.contains('canvas-wrapper')) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'canvas-wrapper';
+                canvas.parentNode.insertBefore(wrapper, canvas);
+                wrapper.appendChild(canvas);
+                wrapper.appendChild(correctSymbolBack);
+            }
         }
+        correctSymbolBack.textContent = currentSymbol.tibetan;
+        
+        // Change check button to flip functionality
+        checkBtn.removeEventListener('click', checkDrawing);
+        checkBtn.addEventListener('click', flipCanvas);
+        
+        // Enable next button
+        nextBtn.disabled = false;
+        // nextBtn.style.opacity = '1';
+        flipCanvas();
     }
+
+    function flipCanvas() {
+        const wrapper = canvas.parentElement;
+        isFlipped = !isFlipped;
+        wrapper.classList.toggle('flipped');
+    }
+    
+    // Modify setNewSymbol function:
+    function setNewSymbol() {
+        if (tibetanSymbols.length === 0) return;
+        
+        currentSymbolIndex = Math.floor(Math.random() * tibetanSymbols.length);
+        currentSymbol = tibetanSymbols[currentSymbolIndex];
+        latinText.textContent = currentSymbol.latin;
+        
+        // Reset the check button
+        checkBtn.textContent = "Check Answer";
+        checkBtn.removeEventListener('click', flipCanvas);
+        checkBtn.addEventListener('click', checkDrawing);
+        
+        // Reset canvas wrapper
+        const wrapper = canvas.parentElement;
+        if (wrapper.classList.contains('flipped')) {
+            wrapper.classList.remove('flipped');
+        }
+        
+        // Disable next button initially
+        nextBtn.disabled = true;
+        nextBtn.style.opacity = '0.5';
+        
+        clearCanvas();
+    }
+    
 
     // Initialize the app
     init();
