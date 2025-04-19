@@ -206,7 +206,7 @@ Hum - ཧཱུྃ`;
             if (separatorIndex !== -1) {
                 
                 const latinInput = line.substring(0, separatorIndex).trim();
-                const tibetanInput = line.substring(separatorIndex + 1).trim();
+                const tibetanInput = line.substring(separatorIndex + 2).trim();
                 if (latinInput && tibetanInput) {
                     tibetanSymbols.push({
                         latin: latinInput,
@@ -307,8 +307,11 @@ Hum - ཧཱུྃ`;
         checkBtn.addEventListener('click', flipCanvas);
         
         // Enable next button
+        resultDiv.classList.remove('hidden');
+        document.querySelector('.feedback').classList.add('hidden');
+        nextBtn.classList.remove('hidden');
         nextBtn.disabled = false;
-        // nextBtn.style.opacity = '1';
+        nextBtn.style.opacity = '1';
         flipCanvas();
     }
 
@@ -342,6 +345,7 @@ Hum - ཧཱུྃ`;
         nextBtn.style.opacity = '0.5';
         
         clearCanvas();
+        resultDiv.classList.add('hidden');
     }
     
 
