@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tibetan Script Learning App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Tibetan Script Learning</h1>
+        
+        <!-- Setup Screen - Initially Visible -->
+        <div id="setup-screen" class="card">
+            <h2>Enter Your Tibetan Symbols</h2>
+            <p class="instruction">Add Latin transcriptions and their corresponding Tibetan symbols below:</p>
+            
+            <div id="pairs-container">
+                <!-- Initial pair input -->
+                <div class="symbol-pair">
+                    <input type="text" class="latin-input" placeholder="Latin (e.g., Om)">
+                    <input type="text" class="tibetan-input" placeholder="Tibetan (e.g., ཨོཾ)">
+                    <button class="remove-pair">×</button>
+                </div>
+            </div>
+            
+            <div class="setup-controls">
+                <button id="add-pair-btn">+ Add Another Pair</button>
+                <button id="start-practice-btn">Start Practice</button>
+            </div>
+            
+            <div class="sample-pairs">
+                <h3>Sample Pairs (Click to Add):</h3>
+                <div class="sample-buttons">
+                    <button class="sample-pair" data-latin="Om" data-tibetan="ཨོཾ">Om - ཨོཾ</button>
+                    <button class="sample-pair" data-latin="Ma" data-tibetan="མ">Ma - མ</button>
+                    <button class="sample-pair" data-latin="Ni" data-tibetan="ནི">Ni - ནི</button>
+                    <button class="sample-pair" data-latin="Pad" data-tibetan="པད">Pad - པད</button>
+                    <button class="sample-pair" data-latin="Me" data-tibetan="མེ">Me - མེ</button>
+                    <button class="sample-pair" data-latin="Hum" data-tibetan="ཧཱུྃ">Hum - ཧཱུྃ</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Practice Screen - Initially Hidden -->
+        <div id="practice-screen" class="card hidden">
+            <div class="prompt">
+                <h2>Draw the Tibetan symbol for:</h2>
+                <div id="latin-text" class="latin-text">Om</div>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="drawing-canvas" width="400" height="400"></canvas>
+                <div class="canvas-controls">
+                    <button id="clear-btn">Clear Canvas</button>
+                    <button id="check-btn">Check Answer</button>
+                </div>
+            </div>
+            
+            <div id="result" class="result hidden">
+                <div class="feedback">
+                    <div id="feedback-message"></div>
+                    <div class="correct-symbol">
+                        <span>Correct symbol:</span>
+                        <span id="correct-symbol"></span>
+                    </div>
+                </div>
+                <button id="next-btn">Next Symbol</button>
+            </div>
+            
+            <button id="back-to-setup-btn" class="back-button">Back to Setup</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
