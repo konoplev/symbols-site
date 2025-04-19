@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const practiceScreen = document.getElementById('practice-screen');
     const pairsTextArea = document.getElementById('pairs-text-area');
     const addSamplesBtn = document.getElementById('add-samples-btn');
+    const samplePairsDropdown = document.getElementById('sample-pairs-dropdown'); // Add this line
     const startPracticeBtn = document.getElementById('start-practice-btn');
     const backToSetupBtn = document.getElementById('back-to-setup-btn');
     
@@ -56,7 +57,7 @@ Hum - ཧཱུྃ`;
     // Setup event listeners
     function setupEventListeners() {
         // Setup screen event listeners
-        //addSamplesBtn.addEventListener('click', addSamplePairs);
+        addSamplesBtn.addEventListener('click', addSamplePair);
         startPracticeBtn.addEventListener('click', startPractice);
         backToSetupBtn.addEventListener('click', goBackToSetup);
         
@@ -75,6 +76,21 @@ Hum - ཧཱུྃ`;
         clearBtn.addEventListener('click', clearCanvas);
         checkBtn.addEventListener('click', checkDrawing);
         nextBtn.addEventListener('click', setNewSymbol);
+    }
+
+    function addSamplePair() {
+        const selectedPair = samplePairsDropdown.value;
+        if (!selectedPair) {
+            alert('Please select a pair first');
+            return;
+        }
+
+        const currentText = pairsTextArea.value;
+        if (currentText && !currentText.endsWith('\n')) {
+            pairsTextArea.value = currentText + '\n' + selectedPair;
+        } else {
+            pairsTextArea.value = currentText + selectedPair;
+        }
     }
     
     // Start practice with collected pairs
