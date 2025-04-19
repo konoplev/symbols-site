@@ -61,13 +61,39 @@ Hum - ཧཱུྃ`;
         const practices = JSON.parse(localStorage.getItem('tibetanPractices')) || [];
         practicesList.innerHTML = '';
         
-        practices.forEach(practice => {
+        practices.forEach((practice, index) => {
             const practiceElement = document.createElement('div');
             practiceElement.className = 'practice-item';
-            practiceElement.textContent = practice.name;
-            practiceElement.addEventListener('click', () => loadPractice(practice));
+            
+            // Create name span
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'practice-name';
+            nameSpan.textContent = practice.name;
+            nameSpan.addEventListener('click', () => loadPractice(practice));
+            
+            // Create remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-practice';
+            removeBtn.textContent = '×';
+            removeBtn.title = 'Remove practice';
+            removeBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent practice from loading when removing
+                removePractice(index);
+            });
+            
+            practiceElement.appendChild(nameSpan);
+            practiceElement.appendChild(removeBtn);
             practicesList.appendChild(practiceElement);
         });
+    }
+
+    function removePractice(index) {
+        if (confirm('Are you sure you want to remove this practice?')) {
+            const practices = JSON.parse(localStorage.getItem('tibetanPractices')) || [];
+            practices.splice(index, 1);
+            localStorage.setItem('tibetanPractices', JSON.stringify(practices));
+            loadStoredPractices();
+        }
     }
 
     function loadPractice(practice) {
