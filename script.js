@@ -269,9 +269,11 @@ Hum - ཧཱུྃ`;
     // Get coordinates adjusted for canvas position
     function getCoordinates(e) {
         const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
         return [
-            e.clientX - rect.left,
-            e.clientY - rect.top
+            (e.clientX - rect.left) * scaleX,
+            (e.clientY - rect.top) * scaleY
         ];
     }
 
