@@ -84,7 +84,8 @@ h2 {
     border: 2px solid #ddd;
     border-radius: 5px;
     transform: rotateY(180deg);
-    font-size: 8rem;
+    font-size: 15rem;
+    padding: 20px;
 }
 
 #drawing-canvas {
