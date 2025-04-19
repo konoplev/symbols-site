@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tibetan Script Learning App</title>
+    <title>Mantra Symbols Learning App</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.18.0/dist/tf.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Tibetan Script Learning</h1>
+        <h1>Mantra Symbols Learning</h1>
         
         <!-- Setup Screen - Initially Visible -->
         <div id="setup-screen" class="card">
-            <h2>Enter Your Tibetan Symbols</h2>
-            
-            <!-- Add practice name input -->
-            <input type="text" id="practice-name" placeholder="Enter practice name (optional)" class="practice-name-input">
-            
-            <!-- Add stored practices section -->
             <div id="stored-practices" class="stored-practices">
                 <h3>Stored Practices</h3>
                 <div id="practices-list" class="practices-list"></div>
             </div>
+
+            <h2>Create a practice</h2>
+            
+            <input type="text" id="practice-name" placeholder="Enter practice name (optional)" class="practice-name-input">
             
             <p class="instruction">Enter each pair on a new line...</p>
             <p class="instruction">Example: Om - ཨོཾ</p>
@@ -38,7 +35,6 @@ Hum - ཧཱུྃ"></textarea>
             
             <div class="setup-controls">
                 <select id="sample-pairs-dropdown">
-                    <option value="">Select a sample pair...</option>
                     <option value="Om - ཨོཾ">Om - ཨོཾ</option>
                     <option value="Ma - མ">Ma - མ</option>
                     <option value="Ni - ནི">Ni - ནི</option>

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToSetupBtn = document.getElementById('back-to-setup-btn');
     const practiceNameInput = document.getElementById('practice-name');
     const practicesList = document.getElementById('practices-list');
+    const storedPracticesSection = document.getElementById('stored-practices');
     
     // DOM elements - Practice screen
     const latinText = document.getElementById('latin-text');
@@ -59,6 +60,10 @@ Hum - ཧཱུྃ`;
 
     function loadStoredPractices() {
         const practices = JSON.parse(localStorage.getItem('tibetanPractices')) || [];
+        
+        // Show/hide stored practices section based on whether there are any practices
+        storedPracticesSection.classList.toggle('hidden', practices.length === 0);
+        
         practicesList.innerHTML = '';
         
         practices.forEach((practice, index) => {
@@ -77,7 +82,7 @@ Hum - ཧཱུྃ`;
             removeBtn.textContent = '×';
             removeBtn.title = 'Remove practice';
             removeBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent practice from loading when removing
+                e.stopPropagation();
                 removePractice(index);
             });
             
