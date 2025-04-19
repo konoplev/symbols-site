@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mantra Symbols Learning App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -34,15 +34,17 @@ Hum - ཧཱུྃ"></textarea>
             </div>
             
             <div class="setup-controls">
-                <select id="sample-pairs-dropdown">
-                    <option value="Om - ཨོཾ">Om - ཨོཾ</option>
-                    <option value="Ma - མ">Ma - མ</option>
-                    <option value="Ni - ནི">Ni - ནི</option>
-                    <option value="Pad - པད">Pad - པད</option>
-                    <option value="Me - མེ">Me - མེ</option>
-                    <option value="Hum - ཧཱུྃ">Hum - ཧཱུྃ</option>
-                </select>
-                <button id="add-samples-btn">Add Sample Pairs</button>
+                <div class="sample-controls">
+                    <select id="sample-pairs-dropdown">
+                        <option value="Om - ཨོཾ">Om - ཨོཾ</option>
+                        <option value="Ma - མ">Ma - མ</option>
+                        <option value="Ni - ནི">Ni - ནི</option>
+                        <option value="Pad - པད">Pad - པད</option>
+                        <option value="Me - མེ">Me - མེ</option>
+                        <option value="Hum - ཧཱུྃ">Hum - ཧཱུྃ</option>
+                    </select>
+                    <button id="add-samples-btn">Add Sample Pairs</button>
+                </div>
                 <button id="start-practice-btn">Start Practice</button>
             </div>
         </div>
