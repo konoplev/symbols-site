@@ -2,10 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM elements - Setup screen
     const setupScreen = document.getElementById('setup-screen');
     const practiceScreen = document.getElementById('practice-screen');
-    const pairsContainer = document.getElementById('pairs-container');
-    const addPairBtn = document.getElementById('add-pair-btn');
+    const pairsTextArea = document.getElementById('pairs-text-area');
+    const addSamplesBtn = document.getElementById('add-samples-btn');
     const startPracticeBtn = document.getElementById('start-practice-btn');
-    const samplePairBtns = document.querySelectorAll('.sample-pair');
     const backToSetupBtn = document.getElementById('back-to-setup-btn');
     
     // DOM elements - Practice screen
@@ -17,6 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedbackMessage = document.getElementById('feedback-message');
     const correctSymbol = document.getElementById('correct-symbol');
     const nextBtn = document.getElementById('next-btn');
+
+    // Sample pairs
+    const samplePairs = `Om - ཨོཾ
+Ma - མ
+Ni - ནི
+Pad - པད
+Me - མེ
+Hum - ཧཱུྃ`;
 
     // Canvas setup
     const ctx = canvas.getContext('2d');
@@ -49,20 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup event listeners
     function setupEventListeners() {
         // Setup screen event listeners
-        addPairBtn.addEventListener('click', addNewPair);
+        //addSamplesBtn.addEventListener('click', addSamplePairs);
         startPracticeBtn.addEventListener('click', startPractice);
-        pairsContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-pair')) {
-                removePair(e.target);
-            }
-        });
-        
-        samplePairBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                addSamplePair(btn.dataset.latin, btn.dataset.tibetan);
-            });
-        });
-        
         backToSetupBtn.addEventListener('click', goBackToSetup);
         
         // Practice screen event listeners
@@ -81,44 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
         checkBtn.addEventListener('click', checkDrawing);
         nextBtn.addEventListener('click', setNewSymbol);
     }
-
-    // Add new pair input fields
-    function addNewPair() {
-        const pairDiv = document.createElement('div');
-        pairDiv.classList.add('symbol-pair');
-        
-        pairDiv.innerHTML = `
-            <input type="text" class="latin-input" placeholder="Latin (e.g., Om)">
-            <input type="text" class="tibetan-input" placeholder="Tibetan (e.g., ཨོཾ)">
-            <button class="remove-pair">×</button>
-        `;
-        
-        pairsContainer.appendChild(pairDiv);
-    }
-    
-    // Remove a pair
-    function removePair(button) {
-        const pairDiv = button.parentElement;
-        pairDiv.remove();
-    }
-    
-    // Add a sample pair
-    function addSamplePair(latin, tibetan) {
-        const pairDiv = document.createElement('div');
-        pairDiv.classList.add('symbol-pair');
-        
-        pairDiv.innerHTML = `
-            <input type="text" class="latin-input" value="${latin}" placeholder="Latin (e.g., Om)">
-            <input type="text" class="tibetan-input" value="${tibetan}" placeholder="Tibetan (e.g., ཨོཾ)">
-            <button class="remove-pair">×</button>
-        `;
-        
-        pairsContainer.appendChild(pairDiv);
-    }
     
     // Start practice with collected pairs
     function startPractice() {
-        collectPairs();
+        tibetanSymbols = [];
+        collectPairs(tibetanSymbols);
         
         if (tibetanSymbols.length === 0) {
             alert('Please add at least one symbol pair before starting.');
@@ -137,20 +99,28 @@ document.addEventListener('DOMContentLoaded', () => {
         setupScreen.classList.remove('hidden');
     }
     
-    // Collect pairs from the input fields
-    function collectPairs() {
-        tibetanSymbols = [];
-        const pairDivs = pairsContainer.querySelectorAll('.symbol-pair');
+    // Collect pairs from the textarea
+    function collectPairs(tibetanSymbols) {
+        const pairsText = pairsTextArea.value.trim();
         
-        pairDivs.forEach(div => {
-            const latinInput = div.querySelector('.latin-input').value.trim();
-            const tibetanInput = div.querySelector('.tibetan-input').value.trim();
+        if (!pairsText) return;
+        
+        const lines = pairsText.split('\n');
+        
+        lines.forEach(line => {
+            // Find first separator (any non-alphanumeric character after the first word)
+            const separatorIndex = line.search(/[^a-zA-Z0-9]\s*/);
             
-            if (latinInput && tibetanInput) {
-                tibetanSymbols.push({
-                    latin: latinInput,
-                    tibetan: tibetanInput
-                });
+            if (separatorIndex !== -1) {
+                
+                const latinInput = line.substring(0, separatorIndex).trim();
+                const tibetanInput = line.substring(separatorIndex + 1).trim();
+                if (latinInput && tibetanInput) {
+                    tibetanSymbols.push({
+                        latin: latinInput,
+                        tibetan: tibetanInput
+                    });
+                }
             }
         });
     }
