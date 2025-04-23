@@ -201,7 +201,7 @@ Hum - ཧཱུྃ`;
         
         lines.forEach(line => {
             // Find first separator (any non-alphanumeric character after the first word)
-            const separatorIndex = line.search(/[^a-zA-Z0-9]\s*/);
+            const separatorIndex = line.search(/[^a-zA-Z0-9а-яА-Я]\s*/);
             
             if (separatorIndex !== -1) {
                 
